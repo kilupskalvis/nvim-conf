@@ -1,5 +1,11 @@
 return {
   "folke/snacks.nvim",
+  keys = {
+    -- Disable snacks_picker's <leader>gd so diffview can handle it
+    { "<leader>gd", false },
+    -- Also disable <leader>gf since diffview maps it to DiffviewFileHistory
+    { "<leader>gf", false },
+  },
   opts = {
     dashboard = {
       enabled = true,
