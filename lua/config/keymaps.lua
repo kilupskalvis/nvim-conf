@@ -1,20 +1,27 @@
--- Window navigation with arrow keys
+-- Window navigation
 vim.keymap.set("n", "<leader>w<Left>", "<C-w>h", { desc = "Go to left window" })
 vim.keymap.set("n", "<leader>w<Down>", "<C-w>j", { desc = "Go to lower window" })
 vim.keymap.set("n", "<leader>w<Up>", "<C-w>k", { desc = "Go to upper window" })
 vim.keymap.set("n", "<leader>w<Right>", "<C-w>l", { desc = "Go to right window" })
 
--- Window resizing (Option+Shift+Arrow)
+-- Window resizing
 vim.keymap.set("n", "<A-S-Up>", "<cmd>resize +2<cr>", { desc = "Increase height" })
 vim.keymap.set("n", "<A-S-Down>", "<cmd>resize -2<cr>", { desc = "Decrease height" })
 vim.keymap.set("n", "<A-S-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease width" })
 vim.keymap.set("n", "<A-S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase width" })
 
--- Disable hjkl
-vim.keymap.set("n", "h", "<Nop>")
-vim.keymap.set("n", "j", "<Nop>")
-vim.keymap.set("n", "k", "<Nop>")
-vim.keymap.set("n", "l", "<Nop>")
+-- Disable hjkl in regular file buffers
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    if vim.bo.buftype == "" then
+      local opts = { noremap = true, buffer = true, silent = true }
+      vim.keymap.set("n", "h", "<Nop>", opts)
+      vim.keymap.set("n", "j", "<Nop>", opts)
+      vim.keymap.set("n", "k", "<Nop>", opts)
+      vim.keymap.set("n", "l", "<Nop>", opts)
+    end
+  end,
+})
 
 -- Buffer navigation
 vim.keymap.set("n", "<leader><Left>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
@@ -31,7 +38,20 @@ vim.api.nvim_create_user_command("Dashboard", function()
 end, {})
 
 -- Claude Code
-vim.keymap.set("n", "<leader>cc", "<cmd>split | terminal claude<cr>", { desc = "Claude Code" })
+vim.keymap.set("n", "<leader>cc", function()
+  Snacks.terminal("claude", { win = { position = "bottom" } })
+end, { desc = "Claude Code (toggle)" })
+vim.keymap.set("n", "<leader>cC", "<cmd>split | terminal claude<cr>", { desc = "Claude Code (new)" })
+
+-- Inline git blame (skip diffview buffers)
+vim.keymap.set("n", "<leader>gb", function()
+  local name = vim.api.nvim_buf_get_name(0)
+  if name:match("^diffview://") then
+    vim.notify("Git blame not available in diffview", vim.log.levels.WARN)
+    return
+  end
+  Snacks.git.blame_line()
+end, { desc = "Git Blame Line" })
 
 -- Exit terminal mode
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
