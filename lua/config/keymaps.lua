@@ -13,7 +13,7 @@ vim.keymap.set("n", "<A-S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Incr
 -- Disable hjkl in regular file buffers
 vim.api.nvim_create_autocmd("BufEnter", {
   callback = function()
-    if vim.bo.buftype == "" then
+    if vim.bo.buftype == "" and vim.bo.filetype ~= "oil" then
       local opts = { noremap = true, buffer = true, silent = true }
       vim.keymap.set("n", "h", "<Nop>", opts)
       vim.keymap.set("n", "j", "<Nop>", opts)
@@ -22,6 +22,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end
   end,
 })
+
+-- Buffer management
+vim.keymap.set("n", "<leader>d", function() Snacks.bufdelete() end, { desc = "Delete buffer", nowait = true })
 
 -- Buffer navigation
 vim.keymap.set("n", "<leader><Left>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
