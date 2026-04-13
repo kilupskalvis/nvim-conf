@@ -49,6 +49,23 @@ return {
       show_hidden = true,
     },
   },
+  config = function(_, opts)
+    require("oil").setup(opts)
+    -- When nvim opens a directory, oil loads as a regular buffer.
+    -- Redirect it into a float to keep a consistent UX.
+    vim.api.nvim_create_autocmd("BufWinEnter", {
+      pattern = "oil://*",
+      callback = function()
+        local win = vim.api.nvim_get_current_win()
+        if vim.api.nvim_win_get_config(win).relative == "" then
+          vim.schedule(function()
+            vim.cmd.bdelete()
+            require("oil").open_float()
+          end)
+        end
+      end,
+    })
+  end,
   keys = {
     { "<leader>e", function() require("oil").open_float() end, desc = "File Explorer (oil)" },
   },

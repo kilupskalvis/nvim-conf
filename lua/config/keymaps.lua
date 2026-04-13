@@ -66,5 +66,15 @@ vim.api.nvim_create_autocmd("CmdWinEnter", {
   callback = function() vim.cmd("quit") end,
 })
 
+-- Tame Shift+Arrows to move 5 lines instead of a full page
+vim.keymap.set({ "n", "v" }, "<S-Up>", "20<Up>", { desc = "Move 20 lines up" })
+vim.keymap.set({ "n", "v" }, "<S-Down>", "20<Down>", { desc = "Move 20 lines down" })
+vim.keymap.set("i", "<S-Up>", "<C-o>20<Up>", { desc = "Move 20 lines up" })
+vim.keymap.set("i", "<S-Down>", "<C-o>20<Down>", { desc = "Move 20 lines down" })
+
+-- Tame Shift+Scroll to scroll 3 lines instead of a full page
+vim.keymap.set({ "n", "i", "v" }, "<S-ScrollWheelUp>", "<C-y><C-y><C-y>", { desc = "Shift+Scroll Up (slow)" })
+vim.keymap.set({ "n", "i", "v" }, "<S-ScrollWheelDown>", "<C-e><C-e><C-e>", { desc = "Shift+Scroll Down (slow)" })
+
 -- Exit terminal mode
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })

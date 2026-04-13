@@ -35,12 +35,39 @@ return {
     keymaps = {
       view = {
         { "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close Diffview" } },
+        {
+          "n",
+          "gf",
+          function()
+            require("diffview.actions").goto_file_tab()
+            vim.keymap.set("n", "q", "<cmd>tabclose<cr>", { buffer = true, desc = "Back to Diffview" })
+          end,
+          { desc = "Open file in new tab" },
+        },
       },
       file_panel = {
         { "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close Diffview" } },
+        {
+          "n",
+          "gf",
+          function()
+            require("diffview.actions").goto_file_tab()
+            vim.keymap.set("n", "q", "<cmd>tabclose<cr>", { buffer = true, desc = "Back to Diffview" })
+          end,
+          { desc = "Open file in new tab" },
+        },
       },
       file_history_panel = {
         { "n", "q", "<cmd>DiffviewClose<cr>", { desc = "Close Diffview" } },
+        {
+          "n",
+          "gf",
+          function()
+            require("diffview.actions").goto_file_tab()
+            vim.keymap.set("n", "q", "<cmd>tabclose<cr>", { buffer = true, desc = "Back to Diffview" })
+          end,
+          { desc = "Open file in new tab" },
+        },
       },
     },
   },
