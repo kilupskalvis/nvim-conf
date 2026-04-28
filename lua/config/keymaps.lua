@@ -47,10 +47,10 @@ end, { desc = "Claude Code (toggle)" })
 vim.keymap.set("n", "<leader>cC", "<cmd>split | terminal claude<cr>", { desc = "Claude Code (new)" })
 
 -- Remove LazyVim's lazygit log bindings (replaced by gitlineage.nvim)
-vim.keymap.del("n", "<leader>gl")
-vim.keymap.del("n", "<leader>gL")
+pcall(vim.keymap.del, "n", "<leader>gl")
+pcall(vim.keymap.del, "n", "<leader>gL")
 -- Remove LazyVim's git file history binding (replaced by diffview)
-vim.keymap.del("n", "<leader>gf")
+pcall(vim.keymap.del, "n", "<leader>gf")
 
 -- Inline git blame (skip diffview buffers)
 vim.keymap.set("n", "<leader>gb", function()
@@ -75,6 +75,15 @@ vim.keymap.set("i", "<S-Down>", "<C-o>20<Down>", { desc = "Move 20 lines down" }
 -- Tame Shift+Scroll to scroll 3 lines instead of a full page
 vim.keymap.set({ "n", "i", "v" }, "<S-ScrollWheelUp>", "<C-y><C-y><C-y>", { desc = "Shift+Scroll Up (slow)" })
 vim.keymap.set({ "n", "i", "v" }, "<S-ScrollWheelDown>", "<C-e><C-e><C-e>", { desc = "Shift+Scroll Down (slow)" })
+
+-- Toggle comment with Ctrl+/
+vim.keymap.set("v", "<C-/>", "gcgv", { remap = true, desc = "Toggle comment" })
+vim.keymap.set("n", "<C-/>", "gcc", { remap = true, desc = "Toggle comment line" })
+
+-- Indent/dedent with Tab/Shift+Tab
+vim.keymap.set("v", "<Tab>", function() vim.cmd("silent! normal! >gv") end, { desc = "Indent selection" })
+vim.keymap.set("v", "<S-Tab>", function() vim.cmd("silent! normal! <gv") end, { desc = "Dedent selection" })
+vim.keymap.set("i", "<S-Tab>", "<C-d>", { desc = "Dedent line" })
 
 -- Exit terminal mode
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
