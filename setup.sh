@@ -350,6 +350,28 @@ sync_plugins() {
   fi
 }
 
+ensure_path() {
+  local path_line='export PATH="$HOME/.local/bin:$PATH"'
+
+  local rc_file=""
+  if [[ -f "$HOME/.zshrc" ]]; then
+    rc_file="$HOME/.zshrc"
+  elif [[ -f "$HOME/.bashrc" ]]; then
+    rc_file="$HOME/.bashrc"
+  else
+    rc_file="$HOME/.bashrc"
+    touch "$rc_file"
+  fi
+
+  if ! grep -qF '.local/bin' "$rc_file"; then
+    echo "" >> "$rc_file"
+    echo "$path_line" >> "$rc_file"
+    success "Added ~/.local/bin to PATH in $(basename "$rc_file")"
+  fi
+  warn "Run 'source $rc_file' or open a new terminal for PATH to take effect"
+  echo ""
+}
+
 # --- Main ---
 
 main() {
@@ -405,11 +427,7 @@ main() {
   printf "${DIM}  Neovim: %s | Font: %s %s${NC}\n" "$NEOVIM_VERSION" "$NERD_FONT" "$NERD_FONT_VERSION"
   echo ""
 
-  if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
-    warn "Add ~/.local/bin to your PATH (add to ~/.bashrc or ~/.zshrc):"
-    printf "  ${DIM}export PATH=\"\$HOME/.local/bin:\$PATH\"${NC}\n"
-    echo ""
-  fi
+  ensure_path
 }
 
 main "$@"
