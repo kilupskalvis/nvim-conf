@@ -48,6 +48,9 @@ vim.keymap.set({ "n", "v" }, "<M-S-Down>", "G", { desc = "Bottom of file" })
 vim.keymap.set("i", "<M-S-Up>", "<C-o>gg", { desc = "Top of file" })
 vim.keymap.set("i", "<M-S-Down>", "<C-o>G", { desc = "Bottom of file" })
 
+-- Ctrl+Backspace deletes word back (like Ctrl+W)
+vim.keymap.set("i", "<C-BS>", "<C-w>", { desc = "Delete word back" })
+
 -- Make Ctrl+Z undo
 vim.keymap.set("n", "<C-z>", "u", { noremap = true })
 

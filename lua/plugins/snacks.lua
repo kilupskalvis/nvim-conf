@@ -64,6 +64,42 @@ return {
       scroll = { enabled = true },
       explorer = { enabled = false },
       picker = {
+        win = {
+          input = {
+            keys = {
+              ["<C-u>"] = {
+                function()
+                  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-u>", true, false, true), "n", false)
+                end,
+                mode = "i",
+                desc = "Kill to start of line",
+              },
+              ["<C-k>"] = {
+                function()
+                  local col = vim.fn.col(".")
+                  local line = vim.api.nvim_get_current_line()
+                  vim.api.nvim_set_current_line(line:sub(1, col - 1))
+                end,
+                mode = "i",
+                desc = "Kill to end of line",
+              },
+              ["<C-a>"] = {
+                function()
+                  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Home>", true, false, true), "n", false)
+                end,
+                mode = "i",
+                desc = "Start of line",
+              },
+              ["<C-e>"] = {
+                function()
+                  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<End>", true, false, true), "n", false)
+                end,
+                mode = "i",
+                desc = "End of line",
+              },
+            },
+          },
+        },
         sources = {
           files = {
             hidden = true,
